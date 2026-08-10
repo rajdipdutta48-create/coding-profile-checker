@@ -1,8 +1,8 @@
-function Header() {
+function Header({ title, description }) {
   return (
     <header>
-      <h1>Coding Profile Checker</h1>
-      <p>Track and analyze all your coding profiles in one place.</p>
+      <h1>{title}</h1>
+      <p>{description}</p>
     </header>
   );
 }
