@@ -2,6 +2,8 @@ import { useState } from "react";
 
 function ProfileForm({ profiles, setProfiles }) {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -14,9 +16,13 @@ function ProfileForm({ profiles, setProfiles }) {
     if (error) {
       setError("");
     }
+
+    if (result) {
+      setResult(null);
+    }
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const hasProfile = Object.values(profiles).some(
@@ -29,7 +35,30 @@ function ProfileForm({ profiles, setProfiles }) {
     }
 
     setError("");
-    console.log(profiles);
+    setLoading(true);
+    setResult(null);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/profile/check", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(profiles),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to communicate with the server.");
+      }
+
+      const data = await response.json();
+
+      setResult(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -75,7 +104,15 @@ function ProfileForm({ profiles, setProfiles }) {
 
       {error && <p role="alert">{error}</p>}
 
-      <button type="submit">Check Profiles</button>
+      <button type="submit" disabled={loading}>
+        {loading ? "Checking..." : "Check Profiles"}
+      </button>
+
+      {result && (
+        <pre>
+          {JSON.stringify(result, null, 2)}
+        </pre>
+      )}
     </form>
   );
 }
