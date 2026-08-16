@@ -1,6 +1,7 @@
-import { useState } from "react";
 import Header from "./components/Header";
 import ProfileForm from "./components/ProfileForm";
+import { useState } from "react";
+import "./App.css";
 
 function App() {
   const [profiles, setProfiles] = useState({
@@ -10,17 +11,41 @@ function App() {
   });
 
   return (
-    <main>
-      <Header
-        title="Coding Profile Checker"
-        description="Track and analyze all your coding profiles in one place."
-      />
+    <div className="app">
+      <div className="background-glow background-glow-one"></div>
+      <div className="background-glow background-glow-two"></div>
 
-      <ProfileForm
-        profiles={profiles}
-        setProfiles={setProfiles}
-      />
-    </main>
+      <div className="container">
+        <Header
+          title="Coding Profile Checker"
+          description="Track and analyze your competitive programming profiles in one place."
+        />
+
+        <section className="profile-card">
+          <div className="card-heading">
+            <span className="card-badge">PROFILE ANALYZER</span>
+
+            <h2>Connect your coding profiles</h2>
+
+            <p>
+              Enter your usernames and get your coding activity from multiple
+              platforms in one place.
+            </p>
+          </div>
+
+          <ProfileForm
+            profiles={profiles}
+            setProfiles={setProfiles}
+          />
+        </section>
+
+        <footer>
+          <p>
+            Built with React + Express
+          </p>
+        </footer>
+      </div>
+    </div>
   );
 }
 

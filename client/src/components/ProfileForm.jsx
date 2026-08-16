@@ -72,7 +72,7 @@ function ProfileForm({ profiles, setProfiles }) {
           type="text"
           value={profiles.codeforces}
           onChange={handleChange}
-          placeholder="Enter Codeforces username"
+          placeholder="e.g. tourist"
         />
       </div>
 
@@ -85,7 +85,7 @@ function ProfileForm({ profiles, setProfiles }) {
           type="text"
           value={profiles.leetcode}
           onChange={handleChange}
-          placeholder="Enter LeetCode username"
+          placeholder="e.g. neetcode"
         />
       </div>
 
@@ -98,7 +98,7 @@ function ProfileForm({ profiles, setProfiles }) {
           type="text"
           value={profiles.github}
           onChange={handleChange}
-          placeholder="Enter GitHub username"
+          placeholder="e.g. rajdipdutta48-create"
         />
       </div>
 
