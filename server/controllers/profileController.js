@@ -12,7 +12,7 @@ async function checkProfiles(req, res) {
 
     res.status(200).json({
       success: true,
-      profiles,
+      ...profiles,
     });
   } catch (error) {
     console.error("Profile controller error:", error);

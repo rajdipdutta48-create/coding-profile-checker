@@ -6,4 +6,4 @@ const router = express.Router();
 
 router.post("/check", checkProfiles);
 
-module.exports = router;
+module.exports = router;  
