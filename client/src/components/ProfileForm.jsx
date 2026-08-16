@@ -1,9 +1,8 @@
 import { useState } from "react";
 
-function ProfileForm({ profiles, setProfiles }) {
+function ProfileForm({ profiles, setProfiles, onResult }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -17,9 +16,7 @@ function ProfileForm({ profiles, setProfiles }) {
       setError("");
     }
 
-    if (result) {
-      setResult(null);
-    }
+    onResult(null);
   }
 
   async function handleSubmit(event) {
@@ -36,16 +33,19 @@ function ProfileForm({ profiles, setProfiles }) {
 
     setError("");
     setLoading(true);
-    setResult(null);
+    onResult(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/profile/check", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(profiles),
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/profile/check",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(profiles),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to communicate with the server.");
@@ -53,7 +53,7 @@ function ProfileForm({ profiles, setProfiles }) {
 
       const data = await response.json();
 
-      setResult(data);
+      onResult(data);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -64,7 +64,9 @@ function ProfileForm({ profiles, setProfiles }) {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="codeforces">Codeforces Username</label>
+        <label htmlFor="codeforces">
+          Codeforces Username
+        </label>
 
         <input
           id="codeforces"
@@ -77,7 +79,9 @@ function ProfileForm({ profiles, setProfiles }) {
       </div>
 
       <div>
-        <label htmlFor="leetcode">LeetCode Username</label>
+        <label htmlFor="leetcode">
+          LeetCode Username
+        </label>
 
         <input
           id="leetcode"
@@ -90,7 +94,9 @@ function ProfileForm({ profiles, setProfiles }) {
       </div>
 
       <div>
-        <label htmlFor="github">GitHub Username</label>
+        <label htmlFor="github">
+          GitHub Username
+        </label>
 
         <input
           id="github"
@@ -105,14 +111,8 @@ function ProfileForm({ profiles, setProfiles }) {
       {error && <p role="alert">{error}</p>}
 
       <button type="submit" disabled={loading}>
-        {loading ? "Checking..." : "Check Profiles"}
+        {loading ? "Analyzing..." : "Check Profiles"}
       </button>
-
-      {result && (
-        <pre>
-          {JSON.stringify(result, null, 2)}
-        </pre>
-      )}
     </form>
   );
 }

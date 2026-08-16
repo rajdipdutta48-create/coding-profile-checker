@@ -1,6 +1,9 @@
+import { useState } from "react";
+
 import Header from "./components/Header";
 import ProfileForm from "./components/ProfileForm";
-import { useState } from "react";
+import ProfileResults from "./components/ProfileResults";
+
 import "./App.css";
 
 function App() {
@@ -9,6 +12,8 @@ function App() {
     leetcode: "",
     github: "",
   });
+
+  const [profileData, setProfileData] = useState(null);
 
   return (
     <div className="app">
@@ -28,21 +33,22 @@ function App() {
             <h2>Connect your coding profiles</h2>
 
             <p>
-              Enter your usernames and get your coding activity from multiple
-              platforms in one place.
+              Enter your usernames and get your coding activity from
+              multiple platforms in one place.
             </p>
           </div>
 
           <ProfileForm
             profiles={profiles}
             setProfiles={setProfiles}
+            onResult={setProfileData}
           />
         </section>
 
+        <ProfileResults data={profileData} />
+
         <footer>
-          <p>
-            Built with React + Express
-          </p>
+          <p>Built with React + Express</p>
         </footer>
       </div>
     </div>
