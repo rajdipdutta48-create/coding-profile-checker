@@ -8,11 +8,25 @@ function CodeforcesCard({ profile }) {
 
   const rankInfo = getCodeforcesRankInfo(profile.rating);
 
+  // Practice recommendation
+  const currentRating = profile.rating ?? 0;
+  const baseRating = Math.floor(currentRating / 100) * 100;
+
+  const practiceMin = Math.max(0, baseRating - 100);
+  const practiceMax = baseRating + 300;
+
   return (
     <article className="platform-card codeforces-card">
+      {/* HEADER */}
+
       <div className="platform-header">
         <div className="platform-brand">
-          <div className="platform-logo codeforces-logo">CF</div>
+          <div className="platform-logo codeforces-logo">
+            <img
+              src="/images/codeforces.png"
+              alt="Codeforces logo"
+            />
+          </div>
 
           <div>
             <h3>Codeforces</h3>
@@ -30,6 +44,7 @@ function CodeforcesCard({ profile }) {
       </div>
 
       {/* RANK SECTION */}
+
       <div className="cf-rank-section">
         <div className="cf-rank-header">
           <div>
@@ -83,6 +98,7 @@ function CodeforcesCard({ profile }) {
       </div>
 
       {/* BASIC STATISTICS */}
+
       <div className="stats-grid">
         <div className="stat-box">
           <span>⭐ Rating</span>
@@ -109,7 +125,41 @@ function CodeforcesCard({ profile }) {
         </div>
       </div>
 
+      {/* PRACTICE RECOMMENDATION */}
+
+      <div className="analytics-block">
+        <div className="analytics-title">
+          <h4>🎯 Practice Recommendation</h4>
+
+          <span>Based on current rating</span>
+        </div>
+
+        <div className="cf-practice-box">
+          <div className="cf-practice-content">
+            <div>
+              <div className="cf-practice-label">
+                Recommended Problem Rating
+              </div>
+
+              <strong className="cf-practice-range">
+                {practiceMin} – {practiceMax}
+              </strong>
+            </div>
+
+            <div className="cf-practice-description">
+              Focus mainly around{" "}
+              <strong>
+                {baseRating}–{baseRating + 200}
+              </strong>{" "}
+              rated problems. Occasionally attempt problems up to{" "}
+              <strong>{practiceMax}</strong> to challenge yourself.
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* RATING DISTRIBUTION */}
+
       <div className="analytics-block">
         <div className="analytics-title">
           <h4>📊 Problem Rating Distribution</h4>
@@ -155,6 +205,7 @@ function CodeforcesCard({ profile }) {
       </div>
 
       {/* RECENT SUBMISSIONS */}
+
       <div className="recent-submissions">
         <div className="analytics-title">
           <h4>⚡ Recent Submissions</h4>

@@ -4,6 +4,7 @@ const USER_PROFILE_QUERY = `
   query userPublicProfile($username: String!) {
     matchedUser(username: $username) {
       username
+
       profile {
         ranking
         realName
@@ -11,6 +12,7 @@ const USER_PROFILE_QUERY = `
         countryName
         reputation
       }
+
       submitStatsGlobal {
         acSubmissionNum {
           difficulty
@@ -18,8 +20,63 @@ const USER_PROFILE_QUERY = `
         }
       }
     }
+
+    recentAcSubmissionList(username: $username, limit: 20) {
+      id
+      title
+      titleSlug
+      timestamp
+      lang
+      statusDisplay
+    }
   }
 `;
+
+const PROBLEM_TOPIC_QUERY = `
+  query questionData($titleSlug: String!) {
+    question(titleSlug: $titleSlug) {
+      title
+      titleSlug
+
+      topicTags {
+        name
+        slug
+      }
+    }
+  }
+`;
+
+async function fetchProblemTopics(titleSlug) {
+  try {
+    const response = await fetch(LEETCODE_GRAPHQL_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: PROBLEM_TOPIC_QUERY,
+        variables: {
+          titleSlug,
+        },
+        operationName: "questionData",
+      }),
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+
+    if (data.errors?.length) {
+      return [];
+    }
+
+    return data.data?.question?.topicTags ?? [];
+  } catch {
+    return [];
+  }
+}
 
 async function fetchLeetcodeProfile(username) {
   const response = await fetch(LEETCODE_GRAPHQL_URL, {
@@ -71,13 +128,48 @@ async function fetchLeetcodeProfile(username) {
     }
   }
 
+  const recentSubmissions =
+    data.data?.recentAcSubmissionList ?? [];
+
+  const submissionsWithTopics = await Promise.all(
+    recentSubmissions.map(async (submission) => {
+      const topics = await fetchProblemTopics(
+        submission.titleSlug
+      );
+
+      return {
+        id: submission.id,
+        title: submission.title,
+        titleSlug: submission.titleSlug,
+        language: submission.lang,
+        status: submission.statusDisplay,
+        timestamp: submission.timestamp,
+        topics,
+      };
+    })
+  );
+
+  const topicFrequency = {};
+
+  for (const submission of submissionsWithTopics) {
+    for (const topic of submission.topics) {
+      topicFrequency[topic.name] =
+        (topicFrequency[topic.name] || 0) + 1;
+    }
+  }
+
   return {
     username: user.username,
     ranking: user.profile?.ranking ?? null,
     realName: user.profile?.realName ?? null,
     country: user.profile?.countryName ?? null,
     reputation: user.profile?.reputation ?? 0,
+
     solved,
+
+    recentSubmissions: submissionsWithTopics,
+
+    topicFrequency,
   };
 }
 
