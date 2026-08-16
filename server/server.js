@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 
+const profileRoutes = require("./routes/profileRoutes");
+
 const app = express();
 
 const PORT = 5000;
@@ -15,19 +17,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-app.post("/api/profile/check", (req, res) => {
-  const { codeforces, leetcode, github } = req.body;
-
-  res.json({
-    success: true,
-    message: "Profile data received successfully",
-    profiles: {
-      codeforces: codeforces || "",
-      leetcode: leetcode || "",
-      github: github || "",
-    },
-  });
-});
+app.use("/api/profile", profileRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
