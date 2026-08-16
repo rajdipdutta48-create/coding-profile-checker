@@ -1,0 +1,153 @@
+.github-activity {
+  margin-top: 25px;
+}
+
+.github-heatmap-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.github-heatmap-controls label {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.github-heatmap-controls select {
+  padding: 7px 10px;
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  border-radius: 8px;
+  outline: none;
+  background: rgba(15, 23, 42, 0.8);
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.github-heatmap-controls select:hover,
+.github-heatmap-controls select:focus {
+  border-color: rgba(74, 222, 128, 0.6);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.08);
+}
+
+.github-heatmap-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding: 8px 4px 10px;
+}
+
+.github-heatmap {
+  display: flex;
+  gap: 5px;
+  min-width: max-content;
+}
+
+.github-week {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.github-day {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.github-day:hover {
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.45);
+  opacity: 1;
+}
+
+/* 0 contributions */
+.github-level-0 {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Low activity */
+.github-level-1 {
+  background: linear-gradient(
+    135deg,
+    rgba(220, 252, 231, 0.35),
+    rgba(134, 239, 172, 0.45)
+  );
+  border-color: rgba(134, 239, 172, 0.2);
+}
+
+/* Medium-low activity */
+.github-level-2 {
+  background: linear-gradient(
+    135deg,
+    rgba(134, 239, 172, 0.55),
+    rgba(34, 197, 94, 0.65)
+  );
+  border-color: rgba(74, 222, 128, 0.25);
+}
+
+/* Medium-high activity */
+.github-level-3 {
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.75),
+    rgba(22, 163, 74, 0.9)
+  );
+  border-color: rgba(74, 222, 128, 0.35);
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.05);
+}
+
+/* Maximum activity */
+.github-level-4 {
+  background: linear-gradient(
+    135deg,
+    #22c55e,
+    #15803d
+  );
+  border-color: rgba(134, 239, 172, 0.45);
+  box-shadow:
+    0 0 7px rgba(34, 197, 94, 0.22),
+    inset 0 0 5px rgba(255, 255, 255, 0.08);
+}
+
+.github-heatmap-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.github-legend {
+  display: flex;
+  gap: 4px;
+}
+
+.github-legend .github-day {
+  width: 12px;
+  height: 12px;
+}
+
+.github-heatmap-info {
+  margin: 12px 0 0;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.github-disclaimer {
+  margin: 20px 0 0;
+  color: #475569;
+  font-size: 11px;
+  text-align: center;
+}
