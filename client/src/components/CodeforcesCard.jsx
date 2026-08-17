@@ -1,31 +1,34 @@
 import getCodeforcesRankInfo from "../utils/codeforcesRank";
 import "./CodeforcesRank.css";
 
+function getPracticeRange(rating) {
+  const numericRating = Number(rating) || 0;
+
+  const floorRating = Math.floor(numericRating / 100) * 100;
+
+  return {
+    min: Math.max(0, floorRating - 100),
+    max: floorRating + 300,
+  };
+}
+
 function CodeforcesCard({ profile }) {
   const ratingEntries = Object.entries(
-    profile.analytics?.ratingDistribution || {}
+    profile.analytics?.ratingDistribution || {},
   ).sort((a, b) => Number(a[0]) - Number(b[0]));
 
   const rankInfo = getCodeforcesRankInfo(profile.rating);
 
-  // Practice recommendation
-  const currentRating = profile.rating ?? 0;
-  const baseRating = Math.floor(currentRating / 100) * 100;
+  const practiceRange = getPracticeRange(profile.rating);
 
-  const practiceMin = Math.max(0, baseRating - 100);
-  const practiceMax = baseRating + 300;
+  const maxRankInfo = getCodeforcesRankInfo(profile.maxRating);
 
   return (
     <article className="platform-card codeforces-card">
-      {/* HEADER */}
-
       <div className="platform-header">
         <div className="platform-brand">
           <div className="platform-logo codeforces-logo">
-            <img
-              src="/images/codeforces.png"
-              alt="Codeforces logo"
-            />
+            <img src="/images/codeforces.png" alt="Codeforces" />
           </div>
 
           <div>
@@ -50,9 +53,7 @@ function CodeforcesCard({ profile }) {
           <div>
             <span className="section-label">🏆 CURRENT RANK</span>
 
-            <div
-              className={`cf-rank-badge ${rankInfo.currentRank.colorClass}`}
-            >
+            <div className={`cf-rank-badge ${rankInfo.currentRank.colorClass}`}>
               {rankInfo.currentRank.label}
             </div>
           </div>
@@ -61,7 +62,9 @@ function CodeforcesCard({ profile }) {
             <div className="next-rank">
               <span className="section-label">🎯 NEXT TARGET</span>
 
-              <strong>{rankInfo.nextRank.label}</strong>
+              <strong className={rankInfo.nextRank.colorClass}>
+                {rankInfo.nextRank.label}
+              </strong>
             </div>
           )}
         </div>
@@ -74,9 +77,7 @@ function CodeforcesCard({ profile }) {
                 {rankInfo.nextRank.minRating}
               </span>
 
-              <strong>
-                🔥 {rankInfo.pointsNeeded} points needed
-              </strong>
+              <strong>🔥 {rankInfo.pointsNeeded} points needed</strong>
             </div>
 
             <div className="rank-progress-track">
@@ -97,6 +98,31 @@ function CodeforcesCard({ profile }) {
         )}
       </div>
 
+      {/* PRACTICE RECOMMENDATION */}
+
+      <div className="cf-practice-recommendation">
+        <div className="cf-practice-header">
+          <div>
+            <span className="section-label">🧠 PRACTICE RECOMMENDATION</span>
+
+            <h4>Practice problems around your rating</h4>
+          </div>
+
+          <span className="practice-range">
+            {practiceRange.min} – {practiceRange.max}
+          </span>
+        </div>
+
+        <p>
+          Based on your current rating of <strong>{profile.rating}</strong>, try
+          solving problems in the{" "}
+          <strong>
+            {practiceRange.min}–{practiceRange.max}
+          </strong>{" "}
+          rating range.
+        </p>
+      </div>
+
       {/* BASIC STATISTICS */}
 
       <div className="stats-grid">
@@ -107,54 +133,19 @@ function CodeforcesCard({ profile }) {
 
         <div className="stat-box">
           <span>🚀 Max Rating</span>
-          <strong>{profile.maxRating ?? "—"}</strong>
+          <strong className={maxRankInfo.currentRank.colorClass}>
+            {profile.maxRating ?? "—"}
+          </strong>
         </div>
 
         <div className="stat-box">
           <span>🧩 Problems Solved</span>
-          <strong>
-            {profile.analytics?.uniqueProblemsSolved ?? 0}
-          </strong>
+          <strong>{profile.analytics?.uniqueProblemsSolved ?? 0}</strong>
         </div>
 
         <div className="stat-box">
           <span>✅ Accepted</span>
-          <strong>
-            {profile.analytics?.acceptedSubmissions ?? 0}
-          </strong>
-        </div>
-      </div>
-
-      {/* PRACTICE RECOMMENDATION */}
-
-      <div className="analytics-block">
-        <div className="analytics-title">
-          <h4>🎯 Practice Recommendation</h4>
-
-          <span>Based on current rating</span>
-        </div>
-
-        <div className="cf-practice-box">
-          <div className="cf-practice-content">
-            <div>
-              <div className="cf-practice-label">
-                Recommended Problem Rating
-              </div>
-
-              <strong className="cf-practice-range">
-                {practiceMin} – {practiceMax}
-              </strong>
-            </div>
-
-            <div className="cf-practice-description">
-              Focus mainly around{" "}
-              <strong>
-                {baseRating}–{baseRating + 200}
-              </strong>{" "}
-              rated problems. Occasionally attempt problems up to{" "}
-              <strong>{practiceMax}</strong> to challenge yourself.
-            </div>
-          </div>
+          <strong>{profile.analytics?.acceptedSubmissions ?? 0}</strong>
         </div>
       </div>
 
@@ -165,20 +156,17 @@ function CodeforcesCard({ profile }) {
           <h4>📊 Problem Rating Distribution</h4>
 
           <span>
-            {profile.analytics?.submissionsFetched ?? 0} submissions
-            analyzed
+            {profile.analytics?.submissionsFetched ?? 0} submissions analyzed
           </span>
         </div>
 
         {ratingEntries.length === 0 ? (
-          <p className="empty-state">
-            No rated problems found.
-          </p>
+          <p className="empty-state">No rated problems found.</p>
         ) : (
           <div className="rating-bars">
             {ratingEntries.map(([rating, count]) => {
               const maxCount = Math.max(
-                ...ratingEntries.map(([, value]) => value)
+                ...ratingEntries.map(([, value]) => value),
               );
 
               const width = (count / maxCount) * 100;
@@ -210,9 +198,7 @@ function CodeforcesCard({ profile }) {
         <div className="analytics-title">
           <h4>⚡ Recent Submissions</h4>
 
-          <span>
-            {profile.analytics?.recentSubmissions?.length ?? 0}
-          </span>
+          <span>{profile.analytics?.recentSubmissions?.length ?? 0}</span>
         </div>
 
         {profile.analytics?.recentSubmissions?.length ? (
@@ -220,19 +206,13 @@ function CodeforcesCard({ profile }) {
             {profile.analytics.recentSubmissions
               .slice(0, 5)
               .map((submission) => (
-                <div
-                  className="submission-row"
-                  key={submission.id}
-                >
+                <div className="submission-row" key={submission.id}>
                   <div>
                     <strong>
-                      {submission.problemIndex}.{" "}
-                      {submission.problemName}
+                      {submission.problemIndex}. {submission.problemName}
                     </strong>
 
-                    <span>
-                      {submission.programmingLanguage}
-                    </span>
+                    <span>{submission.programmingLanguage}</span>
                   </div>
 
                   <span
@@ -250,9 +230,7 @@ function CodeforcesCard({ profile }) {
               ))}
           </div>
         ) : (
-          <p className="empty-state">
-            No recent submissions.
-          </p>
+          <p className="empty-state">No recent submissions.</p>
         )}
       </div>
     </article>
