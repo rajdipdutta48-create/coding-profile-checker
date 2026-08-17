@@ -13,18 +13,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const API_PREFIX = process.env.VERCEL ? "" : "/api";
-
-app.get(`${API_PREFIX}/health`, (req, res) => {
+app.get("/api/health", (req, res) => {
   res.json({
     success: true,
     message: "Coding Profile Checker API is running",
   });
 });
 
-app.use(`${API_PREFIX}/profile`, profileRoutes);
-app.use(`${API_PREFIX}/auth`, authRoutes);
-app.use(`${API_PREFIX}/ai`, aiRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoutes);
 
 let mongoConnectionPromise;
 
