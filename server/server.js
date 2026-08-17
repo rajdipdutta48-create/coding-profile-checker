@@ -2,8 +2,10 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 const profileRoutes = require("./routes/profileRoutes");
+const authRoutes = require("./authentication/authRoutes");
 
 const app = express();
 
@@ -20,7 +22,17 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/profile", profileRoutes);
+app.use("/api/auth", authRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("MongoDB Atlas connected");
+
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("MongoDB connection failed:", error.message);
+  });
