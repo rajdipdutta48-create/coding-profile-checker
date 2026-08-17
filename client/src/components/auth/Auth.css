@@ -1,0 +1,692 @@
+.auth-scene {
+  position: relative;
+  min-height: 720px;
+  margin-top: 30px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.2), transparent 35%),
+    radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.15), transparent 35%),
+    #050b18;
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.45);
+}
+
+/* =========================
+   STARS
+   ========================= */
+
+.auth-stars {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(circle, white 1px, transparent 1px),
+    radial-gradient(circle, rgba(165, 180, 252, 0.7) 1px, transparent 1px);
+  background-size: 90px 90px, 130px 130px;
+  background-position: 0 0, 40px 50px;
+  animation: starsMove 20s linear infinite;
+}
+
+@keyframes starsMove {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(90px);
+  }
+}
+
+/* =========================
+   GATE
+   ========================= */
+
+.auth-gate-background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gate {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 430px;
+  height: 520px;
+  transform: translateX(-50%);
+}
+
+.gate-door {
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  height: 430px;
+  border: 5px solid #374151;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.03), transparent),
+    #111827;
+  box-shadow:
+    inset 0 0 40px rgba(0, 0, 0, 0.7),
+    0 0 40px rgba(0, 0, 0, 0.5);
+  transition: transform 1.5s cubic-bezier(0.68, -0.2, 0.2, 1);
+}
+
+.gate-door-left {
+  left: 0;
+  transform-origin: left center;
+  border-radius: 18px 0 0 0;
+}
+
+.gate-door-right {
+  right: 0;
+  transform-origin: right center;
+  border-radius: 0 18px 0 0;
+}
+
+.auth-scene.unlocking .gate-door-left {
+  transform: perspective(700px) rotateY(-72deg);
+}
+
+.auth-scene.unlocking .gate-door-right {
+  transform: perspective(700px) rotateY(72deg);
+}
+
+.gate-wall {
+  position: absolute;
+  bottom: 0;
+  width: 150px;
+  height: 360px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(180deg, #263244, #111827);
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.5);
+}
+
+.gate-wall-left {
+  left: 0;
+}
+
+.gate-wall-right {
+  right: 0;
+}
+
+.gate-lamp {
+  position: absolute;
+  bottom: 250px;
+  width: 45px;
+  height: 65px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: #fde68a;
+  background: rgba(245, 158, 11, 0.15);
+  box-shadow:
+    0 0 30px rgba(245, 158, 11, 0.5),
+    inset 0 0 15px rgba(245, 158, 11, 0.2);
+  animation: lampGlow 2s ease-in-out infinite alternate;
+}
+
+.gate-lamp-left {
+  left: 55px;
+}
+
+.gate-lamp-right {
+  right: 55px;
+}
+
+@keyframes lampGlow {
+  from {
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+  }
+
+  to {
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.7);
+  }
+}
+
+/* =========================
+   LOCK
+   ========================= */
+
+.gate-lock {
+  position: absolute;
+  left: 50%;
+  bottom: 170px;
+  width: 55px;
+  height: 65px;
+  transform: translateX(-50%);
+  z-index: 5;
+  transition: 0.5s ease;
+}
+
+.lock-body {
+  position: absolute;
+  bottom: 0;
+  left: 5px;
+  width: 45px;
+  height: 42px;
+  border-radius: 8px;
+  background: #f59e0b;
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
+}
+
+.lock-hole {
+  position: absolute;
+  left: 20px;
+  bottom: 13px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #111827;
+}
+
+.auth-scene.unlocking .gate-lock {
+  opacity: 0;
+  transform: translateX(-50%) scale(1.5);
+}
+
+/* =========================
+   BIRD
+   ========================= */
+
+.bird-area {
+  position: absolute;
+  top: 45px;
+  left: 50%;
+  z-index: 20;
+  width: 500px;
+  transform: translateX(-50%);
+}
+
+.bird {
+  position: relative;
+  width: 150px;
+  height: 130px;
+  margin: 0 auto;
+  animation: birdFloat 3s ease-in-out infinite;
+}
+
+@keyframes birdFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(2deg);
+  }
+}
+
+.bird-body {
+  position: absolute;
+  left: 25px;
+  top: 15px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50% 50% 45% 45%;
+  background: linear-gradient(145deg, #60a5fa, #2563eb);
+  box-shadow:
+    inset -12px -15px 20px rgba(0, 0, 0, 0.2),
+    0 15px 35px rgba(37, 99, 235, 0.35);
+}
+
+.bird-body::before {
+  content: "";
+  position: absolute;
+  left: 22px;
+  top: 32px;
+  width: 58px;
+  height: 55px;
+  border-radius: 50%;
+  background: #f8fafc;
+}
+
+.bird-eye {
+  position: absolute;
+  top: 30px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #111827;
+  z-index: 3;
+}
+
+.bird-eye-left {
+  left: 27px;
+}
+
+.bird-eye-right {
+  right: 27px;
+}
+
+.bird-eye::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: white;
+}
+
+.bird-beak {
+  position: absolute;
+  left: 44px;
+  top: 48px;
+  z-index: 4;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 18px solid #f59e0b;
+}
+
+.bird-wing {
+  position: absolute;
+  z-index: 5;
+  width: 55px;
+  height: 70px;
+  border-radius: 60% 40% 60% 40%;
+  background: linear-gradient(145deg, #93c5fd, #3b82f6);
+}
+
+.bird-wing-left {
+  left: -30px;
+  top: 38px;
+  transform: rotate(25deg);
+}
+
+.bird-wing-right {
+  right: -25px;
+  top: 42px;
+  transform: rotate(-25deg);
+}
+
+.bird-key {
+  position: absolute;
+  right: -22px;
+  top: 18px;
+  font-size: 36px;
+  transform: rotate(-25deg);
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+}
+
+.bird-foot {
+  position: absolute;
+  bottom: -10px;
+  width: 25px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+.bird-foot-left {
+  left: 30px;
+}
+
+.bird-foot-right {
+  right: 30px;
+}
+
+/* =========================
+   SPEECH CLOUD
+   ========================= */
+
+.speech-cloud {
+  position: absolute;
+  left: 240px;
+  top: 5px;
+  width: 230px;
+  min-height: 90px;
+  padding: 22px 25px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: #172033;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  animation: cloudFloat 3s ease-in-out infinite;
+}
+
+.speech-cloud::before,
+.speech-cloud::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.speech-cloud::before {
+  left: -20px;
+  bottom: 18px;
+  width: 30px;
+  height: 30px;
+}
+
+.speech-cloud::after {
+  left: -8px;
+  bottom: 5px;
+  width: 17px;
+  height: 17px;
+}
+
+@keyframes cloudFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.auth-scene.error .bird {
+  animation: birdError 0.5s ease-in-out 2;
+}
+
+.auth-scene.error .speech-cloud {
+  color: #dc2626;
+}
+
+@keyframes birdError {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-10px) rotate(-5deg);
+  }
+
+  75% {
+    transform: translateX(10px) rotate(5deg);
+  }
+}
+
+.auth-scene.unlocking .bird {
+  animation: birdFlyAway 2.5s ease-in forwards;
+}
+
+.auth-scene.unlocking .speech-cloud {
+  color: #15803d;
+}
+
+@keyframes birdFlyAway {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(0, -80px) scale(1.05);
+  }
+
+  100% {
+    transform: translate(260px, 260px) scale(0.7);
+    opacity: 0;
+  }
+}
+
+/* =========================
+   AUTH FORM
+   ========================= */
+
+.auth-form-wrapper {
+  position: relative;
+  z-index: 15;
+  width: min(480px, calc(100% - 40px));
+  margin: 225px auto 0;
+}
+
+.auth-card {
+  width: 100%;
+  padding: 35px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(22px);
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.45),
+    0 0 50px rgba(99, 102, 241, 0.08);
+  animation: cardAppear 0.7s ease-out;
+}
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.auth-heading {
+  margin-bottom: 25px;
+}
+
+.auth-heading h2 {
+  margin: 0 0 8px;
+  color: #f8fafc;
+  font-size: 27px;
+}
+
+.auth-heading p {
+  margin: 0;
+  color: #94a3b8;
+  line-height: 1.6;
+  font-size: 13px;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.auth-card form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.auth-card label {
+  color: #e2e8f0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.auth-card input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 15px;
+  border: 1px solid #334155;
+  border-radius: 11px;
+  outline: none;
+  background: rgba(15, 23, 42, 0.9);
+  color: #f8fafc;
+  font-size: 14px;
+  transition: 0.25s ease;
+}
+
+.auth-card input::placeholder {
+  color: #64748b;
+}
+
+.auth-card input:focus {
+  border-color: #818cf8;
+  box-shadow:
+    0 0 0 4px rgba(99, 102, 241, 0.1),
+    0 0 25px rgba(99, 102, 241, 0.12);
+}
+
+.auth-card button[type="submit"] {
+  width: 100%;
+  margin-top: 5px;
+  padding: 14px;
+}
+
+.auth-switch {
+  margin: 20px 0 0;
+  color: #64748b;
+  text-align: center;
+  font-size: 13px;
+}
+
+.auth-switch-button {
+  display: inline;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #a5b4fc;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.auth-switch-button:hover {
+  transform: none;
+  box-shadow: none;
+  color: #c4b5fd;
+}
+
+/* =========================
+   FLYING KEY
+   ========================= */
+
+.flying-key {
+  position: absolute;
+  left: 50%;
+  top: 300px;
+  z-index: 50;
+  font-size: 50px;
+  filter: drop-shadow(0 0 18px rgba(251, 191, 36, 0.9));
+  animation: keyToLock 2.1s ease-in forwards;
+}
+
+@keyframes keyToLock {
+  0% {
+    transform: translate(-240px, -80px) rotate(-20deg) scale(0.8);
+  }
+
+  45% {
+    transform: translate(-40px, 30px) rotate(20deg) scale(1.1);
+  }
+
+  100% {
+    transform: translate(-25px, 170px) rotate(360deg) scale(0.6);
+    opacity: 0;
+  }
+}
+
+.unlock-message {
+  position: absolute;
+  left: 50%;
+  bottom: 80px;
+  z-index: 60;
+  transform: translateX(-50%);
+  padding: 10px 18px;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  border-radius: 999px;
+  background: rgba(20, 83, 45, 0.35);
+  color: #86efac;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0;
+  animation: unlockText 2.5s ease forwards;
+}
+
+@keyframes unlockText {
+  0%,
+  45% {
+    opacity: 0;
+  }
+
+  60%,
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 700px) {
+  .auth-scene {
+    min-height: 680px;
+    border-radius: 22px;
+  }
+
+  .gate {
+    width: 300px;
+    height: 400px;
+  }
+
+  .gate-door {
+    height: 320px;
+  }
+
+  .gate-wall {
+    width: 100px;
+    height: 280px;
+  }
+
+  .gate-lamp {
+    bottom: 200px;
+  }
+
+  .gate-lamp-left {
+    left: 25px;
+  }
+
+  .gate-lamp-right {
+    right: 25px;
+  }
+
+  .gate-lock {
+    bottom: 130px;
+  }
+
+  .bird-area {
+    top: 35px;
+    width: 100%;
+  }
+
+  .speech-cloud {
+    left: 52%;
+    top: -15px;
+    width: 190px;
+    min-height: 80px;
+    font-size: 11px;
+  }
+
+  .bird {
+    transform: scale(0.8);
+    transform-origin: top center;
+  }
+
+  .auth-form-wrapper {
+    width: calc(100% - 30px);
+    margin-top: 215px;
+  }
+
+  .auth-card {
+    padding: 25px 20px;
+  }
+}

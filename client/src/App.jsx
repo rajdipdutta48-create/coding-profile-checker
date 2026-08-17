@@ -3,6 +3,7 @@ import { useState } from "react";
 import Header from "./components/Header";
 import ProfileForm from "./components/ProfileForm";
 import ProfileResults from "./components/ProfileResults";
+import AuthScene from "./components/auth/AuthScene";
 
 import "./App.css";
 
@@ -15,6 +16,24 @@ function App() {
 
   const [profileData, setProfileData] = useState(null);
 
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("authUser");
+
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  function handleAuthenticated(authenticatedUser) {
+    setUser(authenticatedUser);
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("authUser");
+
+    setUser(null);
+    setProfileData(null);
+  }
+
   return (
     <div className="app">
       <div className="background-glow background-glow-one"></div>
@@ -26,26 +45,42 @@ function App() {
           description="Track and analyze your competitive programming profiles in one place."
         />
 
-        <section className="profile-card">
-          <div className="card-heading">
-            <span className="card-badge">PROFILE ANALYZER</span>
+        {!user ? (
+          <AuthScene onAuthenticated={handleAuthenticated} />
+        ) : (
+          <>
+            <div className="user-bar">
+              <span>
+                Welcome, <strong>{user.name}</strong>
+              </span>
 
-            <h2>Connect your coding profiles</h2>
+              <button type="button" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
 
-            <p>
-              Enter your usernames and get your coding activity from
-              multiple platforms in one place.
-            </p>
-          </div>
+            <section className="profile-card">
+              <div className="card-heading">
+                <span className="card-badge">PROFILE ANALYZER</span>
 
-          <ProfileForm
-            profiles={profiles}
-            setProfiles={setProfiles}
-            onResult={setProfileData}
-          />
-        </section>
+                <h2>Connect your coding profiles</h2>
 
-        <ProfileResults data={profileData} />
+                <p>
+                  Enter your usernames and get your coding activity from
+                  multiple platforms in one place.
+                </p>
+              </div>
+
+              <ProfileForm
+                profiles={profiles}
+                setProfiles={setProfiles}
+                onResult={setProfileData}
+              />
+            </section>
+
+            <ProfileResults data={profileData} />
+          </>
+        )}
 
         <footer>
           <p>Built with React + Express</p>
