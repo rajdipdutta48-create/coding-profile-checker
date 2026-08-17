@@ -20,10 +20,6 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-app.use("/api/profile", profileRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/ai", aiRoutes);
-
 let mongoConnectionPromise;
 
 function connectToMongoDB() {
@@ -34,6 +30,7 @@ function connectToMongoDB() {
   return mongoConnectionPromise;
 }
 
+// Connect to MongoDB BEFORE any route tries to use a model
 app.use(async (req, res, next) => {
   try {
     await connectToMongoDB();
@@ -47,6 +44,10 @@ app.use(async (req, res, next) => {
     });
   }
 });
+
+app.use("/api/profile", profileRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoutes);
 
 if (!process.env.VERCEL) {
   connectToMongoDB()
