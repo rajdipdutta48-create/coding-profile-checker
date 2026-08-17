@@ -21,6 +21,18 @@ const USER_PROFILE_QUERY = `
       }
     }
 
+    userContestRanking(username: $username) {
+      attendedContestsCount
+      rating
+      globalRanking
+      totalParticipants
+      topPercentage
+
+      badge {
+        name
+      }
+    }
+
     recentAcSubmissionList(username: $username, limit: 20) {
       id
       title
@@ -158,6 +170,8 @@ async function fetchLeetcodeProfile(username) {
     }
   }
 
+  const contest = data.data?.userContestRanking ?? null;
+
   return {
     username: user.username,
     ranking: user.profile?.ranking ?? null,
@@ -166,6 +180,26 @@ async function fetchLeetcodeProfile(username) {
     reputation: user.profile?.reputation ?? 0,
 
     solved,
+
+    contest: contest
+      ? {
+          attendedContestsCount:
+            contest.attendedContestsCount ?? 0,
+
+          rating: contest.rating ?? null,
+
+          globalRanking:
+            contest.globalRanking ?? null,
+
+          totalParticipants:
+            contest.totalParticipants ?? null,
+
+          topPercentage:
+            contest.topPercentage ?? null,
+
+          badge: contest.badge?.name ?? null,
+        }
+      : null,
 
     recentSubmissions: submissionsWithTopics,
 

@@ -198,3 +198,252 @@
   overflow: hidden;
   background: white;
 }
+
+/* =========================
+   LEETCODE SOLVED MILESTONE
+   ========================= */
+
+.leetcode-milestone {
+  margin-top: 22px;
+  padding: 18px 20px;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1),
+    rgba(30, 41, 59, 0.45)
+  );
+}
+
+.leetcode-milestone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.leetcode-section-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.leetcode-milestone-header strong {
+  font-size: 17px;
+}
+
+.leetcode-milestone-target {
+  padding: 7px 12px;
+  border-radius: 999px;
+  color: #c7d2fe;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.leetcode-milestone-track {
+  height: 9px;
+  margin-top: 15px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #1e293b;
+}
+
+.leetcode-milestone-fill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.5s ease;
+}
+
+.leetcode-milestone p {
+  margin: 11px 0 0;
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.leetcode-milestone p strong {
+  color: #e2e8f0;
+}
+
+/* Solved levels */
+
+.solved-beginner {
+  color: #cbd5e1;
+}
+
+.solved-starter {
+  color: #4ade80;
+}
+
+.solved-consistent {
+  color: #22d3ee;
+}
+
+.solved-strong {
+  color: #60a5fa;
+}
+
+.solved-advanced {
+  color: #c084fc;
+}
+
+.solved-master {
+  color: #fbbf24;
+}
+
+.leetcode-milestone-fill.solved-beginner {
+  background: #94a3b8;
+}
+
+.leetcode-milestone-fill.solved-starter {
+  background: #22c55e;
+}
+
+.leetcode-milestone-fill.solved-consistent {
+  background: #06b6d4;
+}
+
+.leetcode-milestone-fill.solved-strong {
+  background: #3b82f6;
+}
+
+.leetcode-milestone-fill.solved-advanced {
+  background: #a855f7;
+}
+
+.leetcode-milestone-fill.solved-master {
+  background: #f59e0b;
+}
+
+/* =========================
+   LEETCODE CONTEST
+   ========================= */
+
+.leetcode-contest {
+  margin-top: 22px;
+  padding: 18px 20px;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.08),
+    rgba(30, 41, 59, 0.45)
+  );
+}
+
+.leetcode-contest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.leetcode-contest-header h4 {
+  margin: 0;
+  color: #e2e8f0;
+  font-size: 15px;
+}
+
+.leetcode-contest-badge {
+  flex-shrink: 0;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.contest-unrated {
+  color: #cbd5e1;
+  background: rgba(148, 163, 184, 0.15);
+}
+
+.contest-contender {
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.14);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.contest-knight {
+  color: #c084fc;
+  background: rgba(168, 85, 247, 0.14);
+  border: 1px solid rgba(192, 132, 252, 0.25);
+}
+
+.contest-guardian {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.leetcode-contest-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.leetcode-contest-stats div {
+  padding: 13px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.leetcode-contest-stats span {
+  display: block;
+  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.leetcode-contest-stats strong {
+  color: #f8fafc;
+  font-size: 18px;
+}
+
+.leetcode-contest-note {
+  margin: 13px 0 0;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 700px) {
+  .leetcode-contest-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .leetcode-milestone-header,
+  .leetcode-contest-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .leetcode-milestone-target,
+  .leetcode-contest-badge {
+    align-self: flex-start;
+  }
+
+  .leetcode-contest-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .leetcode-contest-stats {
+    grid-template-columns: 1fr;
+  }
+}

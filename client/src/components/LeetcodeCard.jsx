@@ -1,5 +1,87 @@
 import "./LeetCodeAnalytics.css";
 
+function getSolvedLevel(total) {
+  if (total >= 1000) {
+    return {
+      name: "LeetCode Master",
+      className: "solved-master",
+      current: 1000,
+      next: null,
+    };
+  }
+
+  if (total >= 500) {
+    return {
+      name: "Advanced",
+      className: "solved-advanced",
+      current: 500,
+      next: 1000,
+    };
+  }
+
+  if (total >= 250) {
+    return {
+      name: "Strong",
+      className: "solved-strong",
+      current: 250,
+      next: 500,
+    };
+  }
+
+  if (total >= 100) {
+    return {
+      name: "Consistent",
+      className: "solved-consistent",
+      current: 100,
+      next: 250,
+    };
+  }
+
+  if (total >= 50) {
+    return {
+      name: "Starter",
+      className: "solved-starter",
+      current: 50,
+      next: 100,
+    };
+  }
+
+  return {
+    name: "Beginner",
+    className: "solved-beginner",
+    current: 0,
+    next: 50,
+  };
+}
+
+function getContestBadgeInfo(contest) {
+  if (!contest?.rating) {
+    return {
+      name: "No Contest Rating",
+      className: "contest-unrated",
+    };
+  }
+
+  if (contest.badge === "Guardian") {
+    return {
+      name: "Guardian",
+      className: "contest-guardian",
+    };
+  }
+
+  if (contest.badge === "Knight") {
+    return {
+      name: "Knight",
+      className: "contest-knight",
+    };
+  }
+
+  return {
+    name: "Contender",
+    className: "contest-contender",
+  };
+}
+
 function LeetcodeCard({ profile }) {
   const total = profile.solved?.all ?? 0;
   const easy = profile.solved?.easy ?? 0;
@@ -9,6 +91,20 @@ function LeetcodeCard({ profile }) {
   const easyPercentage = total ? (easy / total) * 100 : 0;
   const mediumPercentage = total ? (medium / total) * 100 : 0;
   const hardPercentage = total ? (hard / total) * 100 : 0;
+
+  const solvedLevel = getSolvedLevel(total);
+
+  const solvedProgress = solvedLevel.next
+    ? Math.min(
+        100,
+        ((total - solvedLevel.current) /
+          (solvedLevel.next - solvedLevel.current)) *
+          100
+      )
+    : 100;
+
+  const contest = profile.contest ?? null;
+  const contestBadge = getContestBadgeInfo(contest);
 
   // Progressive difficulty targets
 
@@ -138,7 +234,9 @@ function LeetcodeCard({ profile }) {
       <div className="stats-grid">
         <div className="stat-box">
           <span>🧩 Total Solved</span>
-          <strong>{total}</strong>
+          <strong className={solvedLevel.className}>
+            {total}
+          </strong>
         </div>
 
         <div className="stat-box">
@@ -165,6 +263,121 @@ function LeetcodeCard({ profile }) {
           <span>⭐ Reputation</span>
           <strong>{profile.reputation ?? 0}</strong>
         </div>
+      </div>
+
+      {/* SOLVED MILESTONE */}
+
+      <div className="leetcode-milestone">
+        <div className="leetcode-milestone-header">
+          <div>
+            <span className="leetcode-section-label">
+              🏆 SOLVED MILESTONE
+            </span>
+
+            <strong className={solvedLevel.className}>
+              {solvedLevel.name}
+            </strong>
+          </div>
+
+          {solvedLevel.next ? (
+            <span className="leetcode-milestone-target">
+              {total} / {solvedLevel.next}
+            </span>
+          ) : (
+            <span className="leetcode-milestone-target">
+              1000+
+            </span>
+          )}
+        </div>
+
+        <div className="leetcode-milestone-track">
+          <div
+            className={`leetcode-milestone-fill ${solvedLevel.className}`}
+            style={{
+              width: `${solvedProgress}%`,
+            }}
+          ></div>
+        </div>
+
+        {solvedLevel.next ? (
+          <p>
+            <strong>
+              {solvedLevel.next - total}
+            </strong>{" "}
+            more problems to reach{" "}
+            <strong>
+              {solvedLevel.next} solved
+            </strong>.
+          </p>
+        ) : (
+          <p>
+            🏆 You've crossed 1000 solved problems.
+            Keep pushing beyond the milestone.
+          </p>
+        )}
+      </div>
+
+      {/* CONTEST PERFORMANCE */}
+
+      <div className="leetcode-contest">
+        <div className="leetcode-contest-header">
+          <div>
+            <span className="leetcode-section-label">
+              🏅 CONTEST PERFORMANCE
+            </span>
+
+            <h4>LeetCode Contest Rating</h4>
+          </div>
+
+          <span
+            className={`leetcode-contest-badge ${contestBadge.className}`}
+          >
+            {contestBadge.name}
+          </span>
+        </div>
+
+        {contest ? (
+          <>
+            <div className="leetcode-contest-stats">
+              <div>
+                <span>Rating</span>
+                <strong>{Math.round(contest.rating)}</strong>
+              </div>
+
+              <div>
+                <span>Global Rank</span>
+                <strong>
+                  {contest.globalRanking ?? "—"}
+                </strong>
+              </div>
+
+              <div>
+                <span>Top</span>
+                <strong>
+                  {contest.topPercentage != null
+                    ? `${contest.topPercentage}%`
+                    : "—"}
+                </strong>
+              </div>
+
+              <div>
+                <span>Contests</span>
+                <strong>
+                  {contest.attendedContestsCount ?? 0}
+                </strong>
+              </div>
+            </div>
+
+            <p className="leetcode-contest-note">
+              Contest rating and badge are taken directly from
+              the user's LeetCode contest profile.
+            </p>
+          </>
+        ) : (
+          <p className="leetcode-contest-note">
+            No contest rating is available for this profile yet.
+          </p>
+        )}
       </div>
 
       {/* DIFFICULTY ANALYTICS */}
@@ -197,7 +410,9 @@ function LeetcodeCard({ profile }) {
           <div className="leetcode-progress-row">
             <div className="leetcode-progress-header">
               <span>🟢 Easy</span>
-              <strong>{easyPercentage.toFixed(1)}%</strong>
+              <strong>
+                {easyPercentage.toFixed(1)}%
+              </strong>
             </div>
 
             <div className="leetcode-progress-track">
@@ -213,7 +428,9 @@ function LeetcodeCard({ profile }) {
           <div className="leetcode-progress-row">
             <div className="leetcode-progress-header">
               <span>🟡 Medium</span>
-              <strong>{mediumPercentage.toFixed(1)}%</strong>
+              <strong>
+                {mediumPercentage.toFixed(1)}%
+              </strong>
             </div>
 
             <div className="leetcode-progress-track">
@@ -229,7 +446,9 @@ function LeetcodeCard({ profile }) {
           <div className="leetcode-progress-row">
             <div className="leetcode-progress-header">
               <span>🔴 Hard</span>
-              <strong>{hardPercentage.toFixed(1)}%</strong>
+              <strong>
+                {hardPercentage.toFixed(1)}%
+              </strong>
             </div>
 
             <div className="leetcode-progress-track">
