@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 const profileRoutes = require("./routes/profileRoutes");
 const authRoutes = require("./authentication/authRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/profile", profileRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoutes);
 
 mongoose
   .connect(process.env.MONGODB_URI)

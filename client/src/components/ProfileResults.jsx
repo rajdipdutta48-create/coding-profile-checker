@@ -1,6 +1,7 @@
 import CodeforcesCard from "./CodeforcesCard";
 import LeetcodeCard from "./LeetcodeCard";
 import GithubCard from "./GithubCard";
+import AIAnalysis from "./AIAnalysis";
 
 function ProfileResults({ data }) {
   if (!data) {
@@ -50,6 +51,8 @@ function ProfileResults({ data }) {
           )}
         </div>
       )}
+
+      <AIAnalysis profileData={data} />
     </section>
   );
 }
