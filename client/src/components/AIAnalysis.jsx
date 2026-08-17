@@ -17,7 +17,7 @@ function AIAnalysis({ profileData }) {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/ai/analyze",
+        "/api/ai/analyze",
         {
           method: "POST",
           headers: {

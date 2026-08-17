@@ -36,7 +36,7 @@ function ProfileForm({ profiles, setProfiles, onResult }) {
     onResult(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/profile/check", {
+      const response = await fetch("/api/profile/check", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
