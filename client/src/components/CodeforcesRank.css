@@ -270,41 +270,71 @@
   font-weight: 800;
 }
 
-.cf-practice-recommendation p {
-  margin: 12px 0 0;
-  color: #94a3b8;
-  font-size: 12px;
-  line-height: 1.6;
+.practice-rating {
+  font-size: 18px;
+  font-weight: 900;
+  background: none;
+  padding: 0;
+  border-radius: 0;
 }
 
-.cf-practice-recommendation p strong {
-  color: #e2e8f0;
+.practice-rating.rank-newbie {
+  color: #cbd5e1;
 }
 
-@media (max-width: 600px) {
-  .cf-rank-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .next-rank {
-    text-align: left;
-  }
-
-  .rank-progress-info {
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .cf-practice-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .practice-range {
-    align-self: flex-start;
-  }
+.practice-rating.rank-pupil {
+  color: #4ade80;
 }
+
+.practice-rating.rank-specialist {
+  color: #22d3ee;
+}
+
+.practice-rating.rank-expert {
+  color: #60a5fa;
+}
+
+.practice-rating.rank-candidate-master {
+  color: #c084fc;
+}
+
+.practice-rating.rank-master {
+  color: #fb923c;
+}
+
+.practice-rating.rank-international-master {
+  color: #f59e0b;
+}
+
+.practice-rating.rank-grandmaster {
+  color: #f87171;
+}
+
+.practice-rating.rank-international-grandmaster {
+  color: #ef4444;
+}
+
+.practice-rating.rank-legendary-grandmaster {
+  color: #ef4444;
+}
+
+/* 4000+ */
+
+.practice-rating.rating-legendary-plus {
+  color: #000000;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 4px 9px;
+  border-radius: 8px;
+}
+
+.lgm-message {
+  color: #f87171 !important;
+  font-weight: 700;
+}
+
+/* =========================
+   STAT RATING COLORS
+   ========================= */
 
 .stat-box strong.rank-newbie {
   color: #cbd5e1;
@@ -344,4 +374,47 @@
 
 .stat-box strong.rank-legendary-grandmaster {
   color: #fca5a5;
+}
+
+.stat-box strong.rating-legendary-plus {
+  color: #000000;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 3px 7px;
+  border-radius: 6px;
+}
+
+.cf-practice-recommendation p {
+  margin: 12px 0 0;
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.cf-practice-recommendation p strong {
+  color: #e2e8f0;
+}
+
+@media (max-width: 600px) {
+  .cf-rank-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .next-rank {
+    text-align: left;
+  }
+
+  .rank-progress-info {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .cf-practice-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .practice-range {
+    align-self: flex-start;
+  }
 }

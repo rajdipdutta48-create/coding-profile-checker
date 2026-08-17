@@ -4,12 +4,28 @@ import "./CodeforcesRank.css";
 function getPracticeRange(rating) {
   const numericRating = Number(rating) || 0;
 
+  // Legendary Grandmaster
+  if (numericRating >= 3000) {
+    return null;
+  }
+
   const floorRating = Math.floor(numericRating / 100) * 100;
 
   return {
     min: Math.max(0, floorRating - 100),
-    max: floorRating + 300,
+    max: Math.min(3500, floorRating + 300),
   };
+}
+
+function getRatingColorClass(rating) {
+  const numericRating = Number(rating) || 0;
+
+  // 4000+ gets black
+  if (numericRating >= 4000) {
+    return "rating-legendary-plus";
+  }
+
+  return getCodeforcesRankInfo(numericRating).currentRank.colorClass;
 }
 
 function CodeforcesCard({ profile }) {
@@ -21,7 +37,9 @@ function CodeforcesCard({ profile }) {
 
   const practiceRange = getPracticeRange(profile.rating);
 
-  const maxRankInfo = getCodeforcesRankInfo(profile.maxRating);
+  const ratingColorClass = getRatingColorClass(profile.rating);
+
+  const maxRatingColorClass = getRatingColorClass(profile.maxRating);
 
   return (
     <article className="platform-card codeforces-card">
@@ -53,7 +71,9 @@ function CodeforcesCard({ profile }) {
           <div>
             <span className="section-label">🏆 CURRENT RANK</span>
 
-            <div className={`cf-rank-badge ${rankInfo.currentRank.colorClass}`}>
+            <div
+              className={`cf-rank-badge ${rankInfo.currentRank.colorClass}`}
+            >
               {rankInfo.currentRank.label}
             </div>
           </div>
@@ -103,24 +123,39 @@ function CodeforcesCard({ profile }) {
       <div className="cf-practice-recommendation">
         <div className="cf-practice-header">
           <div>
-            <span className="section-label">🧠 PRACTICE RECOMMENDATION</span>
+            <span className="section-label">
+              🧠 PRACTICE RECOMMENDATION
+            </span>
 
-            <h4>Practice problems around your rating</h4>
+            <h4>
+              {practiceRange
+                ? "Practice problems around your rating"
+                : "You've reached the top"}
+            </h4>
           </div>
 
-          <span className="practice-range">
-            {practiceRange.min} – {practiceRange.max}
-          </span>
+          <strong className={`practice-rating ${ratingColorClass}`}>
+            {profile.rating}
+          </strong>
         </div>
 
-        <p>
-          Based on your current rating of <strong>{profile.rating}</strong>, try
-          solving problems in the{" "}
-          <strong>
-            {practiceRange.min}–{practiceRange.max}
-          </strong>{" "}
-          rating range.
-        </p>
+        {practiceRange ? (
+          <p>
+            Based on your current rating{" "}
+            <strong className={ratingColorClass}>{profile.rating}</strong>,
+            try solving problems in the{" "}
+            <strong>
+              {practiceRange.min}–{practiceRange.max}
+            </strong>{" "}
+            rating range.
+          </p>
+        ) : (
+          <p className="lgm-message">
+            🏆 Legendary Grandmaster — you've conquered the rating ladder.
+            Now the challenge isn't finding harder problems, it's finding new
+            ways to break the limits.
+          </p>
+        )}
       </div>
 
       {/* BASIC STATISTICS */}
@@ -128,12 +163,14 @@ function CodeforcesCard({ profile }) {
       <div className="stats-grid">
         <div className="stat-box">
           <span>⭐ Rating</span>
-          <strong>{profile.rating ?? "—"}</strong>
+          <strong className={ratingColorClass}>
+            {profile.rating ?? "—"}
+          </strong>
         </div>
 
         <div className="stat-box">
           <span>🚀 Max Rating</span>
-          <strong className={maxRankInfo.currentRank.colorClass}>
+          <strong className={maxRatingColorClass}>
             {profile.maxRating ?? "—"}
           </strong>
         </div>
@@ -198,7 +235,9 @@ function CodeforcesCard({ profile }) {
         <div className="analytics-title">
           <h4>⚡ Recent Submissions</h4>
 
-          <span>{profile.analytics?.recentSubmissions?.length ?? 0}</span>
+          <span>
+            {profile.analytics?.recentSubmissions?.length ?? 0}
+          </span>
         </div>
 
         {profile.analytics?.recentSubmissions?.length ? (
